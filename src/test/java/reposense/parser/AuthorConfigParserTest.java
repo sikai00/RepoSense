@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import reposense.model.Author;
 import reposense.model.AuthorConfiguration;
 import reposense.model.RepoLocation;
+import reposense.report.ErrorSummary;
 
 public class AuthorConfigParserTest {
     private static final Path AUTHOR_CONFIG_EMPTY_LOCATION_FILE = loadResource(AuthorConfigParserTest.class,
@@ -85,10 +86,12 @@ public class AuthorConfigParserTest {
     private static final List<String> FIRST_AUTHOR_EMAIL_LIST =
             Arrays.asList("nbr@example.com", "nbriannl@test.net", "nbriannl@users.noreply.github.com");
 
+    private ErrorSummary errorSummary = new ErrorSummary();
+
     @Test
     public void authorConfig_noSpecialCharacter_success() throws Exception {
         AuthorConfigCsvParser authorConfigCsvParser =
-                new AuthorConfigCsvParser(AUTHOR_CONFIG_NO_SPECIAL_CHARACTER_FILE);
+                new AuthorConfigCsvParser(AUTHOR_CONFIG_NO_SPECIAL_CHARACTER_FILE, errorSummary);
         List<AuthorConfiguration> configs = authorConfigCsvParser.parse();
 
         Assertions.assertEquals(1, configs.size());
@@ -105,7 +108,8 @@ public class AuthorConfigParserTest {
     public void authorConfig_emptyLocation_success() throws Exception {
         AuthorConfiguration expectedConfig = new AuthorConfiguration(new RepoLocation(""));
 
-        AuthorConfigCsvParser authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_EMPTY_LOCATION_FILE);
+        AuthorConfigCsvParser authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_EMPTY_LOCATION_FILE,
+                errorSummary);
         List<AuthorConfiguration> authorConfigs = authorConfigCsvParser.parse();
         AuthorConfiguration authorConfig = authorConfigs.get(0);
 
@@ -117,13 +121,15 @@ public class AuthorConfigParserTest {
 
     @Test
     public void authorConfig_emptyConfig_throwsInvalidCsvException() throws Exception {
-        AuthorConfigCsvParser authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_EMPTY_CONFIG_FILE);
+        AuthorConfigCsvParser authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_EMPTY_CONFIG_FILE,
+                errorSummary);
         Assertions.assertThrows(InvalidCsvException.class, () -> authorConfigCsvParser.parse());
     }
 
     @Test
     public void authorConfig_specialCharacter_success() throws Exception {
-        AuthorConfigCsvParser authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_SPECIAL_CHARACTER_FILE);
+        AuthorConfigCsvParser authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_SPECIAL_CHARACTER_FILE,
+                errorSummary);
         List<AuthorConfiguration> configs = authorConfigCsvParser.parse();
 
         Assertions.assertEquals(1, configs.size());
@@ -138,7 +144,8 @@ public class AuthorConfigParserTest {
 
     @Test
     public void authorConfig_multipleEmails_success() throws Exception {
-        AuthorConfigCsvParser authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_MULTIPLE_EMAILS_FILE);
+        AuthorConfigCsvParser authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_MULTIPLE_EMAILS_FILE,
+                errorSummary);
         List<AuthorConfiguration> configs = authorConfigCsvParser.parse();
 
         Assertions.assertEquals(1, configs.size());
@@ -153,7 +160,7 @@ public class AuthorConfigParserTest {
     @Test
     public void authorConfig_differentColumnOrder_success() throws Exception {
         AuthorConfigCsvParser authorConfigCsvParser =
-                new AuthorConfigCsvParser(AUTHOR_CONFIG_DIFFERENT_COLUMN_ORDER);
+                new AuthorConfigCsvParser(AUTHOR_CONFIG_DIFFERENT_COLUMN_ORDER, errorSummary);
         List<AuthorConfiguration> configs = authorConfigCsvParser.parse();
 
         Assertions.assertEquals(1, configs.size());
@@ -168,7 +175,8 @@ public class AuthorConfigParserTest {
 
     @Test
     public void authorConfig_missingOptionalHeader_success() throws Exception {
-        AuthorConfigCsvParser authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_MISSING_OPTIONAL_HEADER);
+        AuthorConfigCsvParser authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_MISSING_OPTIONAL_HEADER,
+                errorSummary);
         List<AuthorConfiguration> configs = authorConfigCsvParser.parse();
 
         Assertions.assertEquals(1, configs.size());
@@ -182,10 +190,10 @@ public class AuthorConfigParserTest {
     public void authorConfig_newGitHostIdHeader_success() throws Exception {
         AuthorConfigCsvParser authorConfigCsvParser;
 
-        authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_GIT_HOST_ID_HEADER);
+        authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_GIT_HOST_ID_HEADER, errorSummary);
         List<AuthorConfiguration> configsWithGitHostIdHeader = authorConfigCsvParser.parse();
 
-        authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_GITHUB_ID_HEADER);
+        authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_GITHUB_ID_HEADER, errorSummary);
         List<AuthorConfiguration> configsWithGitHubIdHeader = authorConfigCsvParser.parse();
 
         Assertions.assertEquals(configsWithGitHubIdHeader, configsWithGitHostIdHeader);
@@ -193,20 +201,22 @@ public class AuthorConfigParserTest {
 
     @Test
     public void authorConfig_missingMandatoryHeader_throwsInvalidCsvException() throws Exception {
-        AuthorConfigCsvParser authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_MISSING_MANDATORY_HEADER);
+        AuthorConfigCsvParser authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_MISSING_MANDATORY_HEADER,
+                errorSummary);
         Assertions.assertThrows(InvalidCsvException.class, () -> authorConfigCsvParser.parse());
     }
 
     @Test
     public void authorConfig_unknownHeaders_throwsInvalidHeaderException() throws Exception {
-        AuthorConfigCsvParser authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_UNKNOWN_HEADER);
+        AuthorConfigCsvParser authorConfigCsvParser = new AuthorConfigCsvParser(AUTHOR_CONFIG_UNKNOWN_HEADER,
+                errorSummary);
         Assertions.assertThrows(InvalidHeaderException.class, () -> authorConfigCsvParser.parse());
     }
 
     @Test
     public void parse_multipleColumnsWithCommasAndDoubleQuotes_success() throws Exception {
         AuthorConfigCsvParser authorConfigCsvParser =
-                new AuthorConfigCsvParser(AUTHOR_CONFIG_COMMAS_AND_DOUBLEQUOTES_FILE);
+                new AuthorConfigCsvParser(AUTHOR_CONFIG_COMMAS_AND_DOUBLEQUOTES_FILE, errorSummary);
         List<AuthorConfiguration> configs = authorConfigCsvParser.parse();
 
         Assertions.assertEquals(1, configs.size());

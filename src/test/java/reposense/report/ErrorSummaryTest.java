@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import reposense.model.RepoLocation;
 import reposense.parser.InvalidLocationException;
 
+// depreciated
 public class ErrorSummaryTest {
     @Test
     public void errorSummary_addRepeatedErrorMessage_containsNoDuplicates() {
