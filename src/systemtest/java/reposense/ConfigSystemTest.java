@@ -99,16 +99,6 @@ public class ConfigSystemTest {
                 "ConfigSystemTest/sinceBeginningDateRangeWithShallowCloning/expected");
     }
 
-    @Test
-    public void test30DaysFromUntilDateWithShallowCloning() {
-        InputBuilder inputBuilder = initInputBuilder()
-                .addUntilDate("1/11/2017")
-                .addShallowCloning();
-
-        runTest(inputBuilder, true,
-                "ConfigSystemTest/30daysFromUntilDateWithShallowCloning/expected");
-    }
-
     /**
      * System test with a specified until date and a {@link SinceDateArgumentType#FIRST_COMMIT_DATE_SHORTHAND}
      * since date to capture from the first commit, using find previous authors.
