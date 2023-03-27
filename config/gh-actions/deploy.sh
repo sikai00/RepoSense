@@ -72,11 +72,12 @@ REPO_OWNER=${REPO_SLUG_ARRAY[0]}
 REPO_NAME=${REPO_SLUG_ARRAY[1]}
 DASHBOARD_DEPLOY_PATH=./reposense-report
 
+echo $DASHBOARD_DEPLOY_PATH
 echo "$PWD"
 echo "============"
 ls
 echo "============"
-cd ./reposense_report
+cd ./reposense-report
 echo "============"
 ls
 echo "============"
