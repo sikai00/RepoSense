@@ -76,6 +76,10 @@ echo "$PWD"
 echo "============"
 ls
 echo "============"
+cd ./reposense_report
+echo "============"
+ls
+echo "============"
 
 MARKBIND_DEPLOY_PATH=./docs/_site
 ACTIONS_DEPLOY="false"
