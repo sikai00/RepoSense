@@ -100,7 +100,7 @@ jobs:
         echo ${{ github.event.pull_request.head.sha }} > ./pr/SHA
 
     - name: Upload artifacts (pull request)
-      if: ${{ success() && github.event_name == 'pull_request' && matrix.os == 'ubuntu-20.04' }}
+      if: ${{ success() && github.event_name == 'push' && matrix.os == 'ubuntu-20.04' }}
       uses: actions/upload-artifact@v3
       with:
         name: reposense-deployment
