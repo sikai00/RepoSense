@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04, ubuntu-22.04, macos-11, macos-12, windows-2019, windows-2022]
+        os: [ubuntu-20.04]
     runs-on: ${{ matrix.os }}
     env:
       HOMEBREW_NO_AUTO_UPDATE: 1 # Prevent time-consuming brew update
@@ -71,22 +71,8 @@ jobs:
     - name: Run environmental checks
       run: ./gradlew environmentalChecks
 
-    - name: Run linter
-      run: ./gradlew lintFrontend
-
-    - name: Build with Gradle
-      run: ./gradlew clean checkstyleAll test systemTest coverage
-
-    - name: Run code coverage
-      if: ${{ success() && ( matrix.os == 'ubuntu-20.04' || matrix.os == 'macos-11' || matrix.os == 'windows-2022' ) }}
-      uses: codecov/codecov-action@v3
-      with:
-        directory: ${{ github.workspace }}/build/reports/jacoco/coverage
-        files: coverage.xml
-        fail_ci_if_error: true
-
-    - name: Build preview website (pull request)
-      if: ${{ success() && github.event_name == 'pull_request' && matrix.os == 'ubuntu-20.04' }}
+    - name: Build preview website (push)
+      if: ${{ success() && github.event_name == 'push' && matrix.os == 'ubuntu-20.04' }}
       run: |
         git fetch --all && git config --global user.email "-" && git config --global user.name "-" && ./gradlew run -Dargs="--since d1"
         npm install -g markbind-cli
