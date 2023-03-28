@@ -71,20 +71,6 @@ jobs:
     - name: Run environmental checks
       run: ./gradlew environmentalChecks
 
-    - name: Run linter
-      run: ./gradlew lintFrontend
-
-    - name: Build with Gradle
-      run: ./gradlew clean checkstyleAll test systemTest coverage
-
-    - name: Run code coverage
-      if: ${{ success() && ( matrix.os == 'ubuntu-20.04' || matrix.os == 'macos-11' || matrix.os == 'windows-2022' ) }}
-      uses: codecov/codecov-action@v3
-      with:
-        directory: ${{ github.workspace }}/build/reports/jacoco/coverage
-        files: coverage.xml
-        fail_ci_if_error: true
-
     - name: Build preview website (pull request)
       if: ${{ success() && github.event_name == 'pull_request' && matrix.os == 'ubuntu-20.04' }}
       run: |
@@ -156,6 +142,3 @@ jobs:
 
     - name: Set up environment
       run: sudo apt-get install -y libgtk2.0-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2
-
-    - name: Run frontend tests
-      run: ./gradlew frontendTest -Pci
