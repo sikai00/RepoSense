@@ -15,6 +15,8 @@ echo "==============first reposense report==================="
 ls ./reposense-report
 echo "======================================================="
 
+echo "========================end==========================="
+
 CI=${CI:-false}
 ACTIONS_STATUS=${1:-false}
 
