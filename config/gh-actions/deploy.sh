@@ -3,6 +3,18 @@
 # This is intended to be run for pull_request and workflow_run workflows
 
 # Set to false if unset, ref: http://stackoverflow.com/a/39296583/1320290
+echo "==============first ls==================="
+ls
+echo "========================================="
+
+echo "=============check PWD==================="
+echo $PWD
+echo "========================================="
+
+echo "==============first reposense report==================="
+ls ./reposense-report
+echo "======================================================="
+
 CI=${CI:-false}
 ACTIONS_STATUS=${1:-false}
 
