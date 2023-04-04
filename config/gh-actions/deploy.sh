@@ -144,6 +144,7 @@ do
     echo $PWD
     ls
     echo
+    echo
     surge --domain $DASHBOARD_DEPLOY_DOMAIN;
 
     MARKBIND_DEPLOY_DOMAIN=https://docs-${DEPLOY_SUBDOMAIN}-${REPO_NAME}-${REPO_OWNER}.surge.sh
