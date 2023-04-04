@@ -3,6 +3,20 @@
 # This is intended to be run for pull_request and workflow_run workflows
 
 # Set to false if unset, ref: http://stackoverflow.com/a/39296583/1320290
+echo "==============first ls==================="
+ls
+echo "========================================="
+
+echo "=============check PWD==================="
+echo $PWD
+echo "========================================="
+
+echo "==============first reposense report==================="
+ls ./reposense-report
+echo "======================================================="
+
+echo "========================end==========================="
+
 CI=${CI:-false}
 ACTIONS_STATUS=${1:-false}
 
@@ -126,11 +140,17 @@ do
   then
     DASHBOARD_DEPLOY_DOMAIN=https://dashboard-${DEPLOY_SUBDOMAIN}-${REPO_NAME}-${REPO_OWNER}.surge.sh
     echo "Deploy domain: ${DASHBOARD_DEPLOY_DOMAIN}"
-    surge --project ${DASHBOARD_DEPLOY_PATH} --domain $DASHBOARD_DEPLOY_DOMAIN;
+    cd ${DASHBOARD_DEPLOY_PATH}
+    echo $PWD
+    ls
+    surge --domain $DASHBOARD_DEPLOY_DOMAIN;
 
     MARKBIND_DEPLOY_DOMAIN=https://docs-${DEPLOY_SUBDOMAIN}-${REPO_NAME}-${REPO_OWNER}.surge.sh
     echo "Deploy domain: ${MARKBIND_DEPLOY_DOMAIN}"
-    surge --project ${MARKBIND_DEPLOY_PATH} --domain $MARKBIND_DEPLOY_DOMAIN;
+    surge --domain $MARKBIND_DEPLOY_DOMAIN;
+    cd ..
+    echo $PWD
+    ls
 
     # Create github statuses that redirects users to the deployed dashboard and markbind docs
     update_deployment "${ACTIONS_DASHBOARD_ID}" "success" "Deploy domain: ${DASHBOARD_DEPLOY_DOMAIN}" "${ACTIONS_DASHBOARD_ENV}" "${DASHBOARD_DEPLOY_DOMAIN}"
