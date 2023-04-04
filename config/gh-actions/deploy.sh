@@ -141,12 +141,16 @@ do
     DASHBOARD_DEPLOY_DOMAIN=https://dashboard-${DEPLOY_SUBDOMAIN}-${REPO_NAME}-${REPO_OWNER}.surge.sh
     echo "Deploy domain: ${DASHBOARD_DEPLOY_DOMAIN}"
     cd ${DASHBOARD_DEPLOY_PATH}
+    echo $PWD
+    ls
     surge --domain $DASHBOARD_DEPLOY_DOMAIN;
 
     MARKBIND_DEPLOY_DOMAIN=https://docs-${DEPLOY_SUBDOMAIN}-${REPO_NAME}-${REPO_OWNER}.surge.sh
     echo "Deploy domain: ${MARKBIND_DEPLOY_DOMAIN}"
     surge --domain $MARKBIND_DEPLOY_DOMAIN;
     cd ..
+    echo $PWD
+    ls
 
     # Create github statuses that redirects users to the deployed dashboard and markbind docs
     update_deployment "${ACTIONS_DASHBOARD_ID}" "success" "Deploy domain: ${DASHBOARD_DEPLOY_DOMAIN}" "${ACTIONS_DASHBOARD_ENV}" "${DASHBOARD_DEPLOY_DOMAIN}"
