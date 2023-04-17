@@ -77,14 +77,6 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew clean checkstyleAll test systemTest coverage
 
-    - name: Run code coverage
-      if: ${{ success() && ( matrix.os == 'macos-11' || matrix.os == 'windows-2022' ) }}
-      uses: codecov/codecov-action@v3
-      with:
-        directory: ${{ github.workspace }}/build/reports/jacoco/coverage
-        files: coverage.xml
-        fail_ci_if_error: true
-
     - name: Build preview website (pull request)
       if: ${{ success() && github.event_name == 'pull_request' && matrix.os == 'ubuntu-20.04' }}
       run: |
