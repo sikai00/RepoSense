@@ -1,6 +1,5 @@
 # This workflow deploys a RepoSense report and the MarkBind documentation
 # website to surge.sh in a secure manner for pull requests
-# testpr
 
 name: Surge.sh build preview
 
